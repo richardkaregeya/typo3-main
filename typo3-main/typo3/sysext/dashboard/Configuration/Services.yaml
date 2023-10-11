@@ -1,0 +1,12 @@
+imports:
+  - { resource: Backend/DashboardWidgets.yaml }
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3\CMS\Dashboard\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Widgets/*'

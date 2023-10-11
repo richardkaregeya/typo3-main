@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import Login from"@typo3/backend/login.js";import RegularEvent from"@typo3/core/event/regular-event.js";class UserPassLogin{constructor(){this.resetPassword=()=>{const e=document.querySelector(this.options.passwordField);if(""!==e.value){const t=document.querySelector(Login.options.useridentField);t&&(t.value=e.value),e.value=""}},this.showCapsLockWarning=e=>{e.target?.parentElement?.parentElement.querySelector(".t3js-login-alert-capslock")?.classList.toggle("hidden",!UserPassLogin.isCapslockEnabled(e))},this.toggleCopyright=e=>{" "===e.key&&e.target.click()},this.togglePasswordRevealer=e=>{const t=e.target;document.querySelector(this.options.togglePassword).classList.toggle("hidden",""===t.value),""===t.value&&this.togglePasswordVisibility(!0)},this.options={passwordField:".t3js-login-password-field",usernameField:".t3js-login-username-field",copyrightLink:".t3js-login-copyright-link",togglePassword:".t3js-login-toggle-password"};const e=document.querySelector(this.options.usernameField),t=document.querySelector(this.options.passwordField),o=document.querySelector(this.options.togglePassword),s=document.querySelector(this.options.copyrightLink);Login.options.submitHandler=this.resetPassword,[e,t].forEach((e=>new RegularEvent("keypress",this.showCapsLockWarning).bindTo(e))),["input","change"].forEach((e=>new RegularEvent(e,this.togglePasswordRevealer).bindTo(t))),new RegularEvent("keydown",this.toggleCopyright).bindTo(s),new RegularEvent("click",(()=>this.togglePasswordVisibility())).bindTo(o),parent.opener?.TYPO3?.configuration?.username&&(e.value=parent.opener.TYPO3.configuration.username),""===e.value?e.focus():t.focus()}static isCapslockEnabled(e){const t=e||window.event;if(!t)return!1;let o=-1;t.which?o=t.which:t.keyCode&&(o=t.keyCode);let s=!1;return t.shiftKey?s=t.shiftKey:t.modifiers&&(s=!!(4&t.modifiers)),o>=65&&o<=90&&!s||o>=97&&o<=122&&s}togglePasswordVisibility(e){const t=document.querySelector(this.options.passwordField),o=document.querySelector(this.options.togglePassword);if(e)t.type="password",o.classList.remove("active");else{const e="password"===t.type;t.type=e?"text":"password",o.classList.toggle("active",e)}}}export default new UserPassLogin;
